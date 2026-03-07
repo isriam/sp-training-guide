@@ -20,6 +20,29 @@ DP-64QAM|D.P. 64 Q.A.M.
 DP-QPSK|D.P. Q.P.S.K.
 SD-WAN|S.D. WAN
 
+# Layer/Level compound terms (must be before standalone L1/L2/L3)
+# IS-IS Level context
+L1/L2|Level 1 / Level 2
+L2-only|Level 2 only
+L2 only|Level 2 only
+L2 backbone|Level 2 backbone
+L2 core|Level 2 core
+L1 intra-area|Level 1 intra-area
+L1 access|Level 1 access
+L1→L2|Level 1 to Level 2
+# Layer context (networking)
+L2VPN|Layer 2 V.P.N.
+L3VPN|Layer 3 V.P.N.
+L2 fabric|Layer 2 fabric
+L2 switching|Layer 2 switching
+L2 overhead|Layer 2 overhead
+L2 connectivity|Layer 2 connectivity
+L2 frames|Layer 2 frames
+L2 multi-tenancy|Layer 2 multi-tenancy
+L2 domains|Layer 2 domains
+L2/L3|Layer 2 / Layer 3
+L3 hops|Layer 3 hops
+
 # Prefixed variants (before base acronyms)
 VPNv4|V.P.N. v4
 VPNv6|V.P.N. v6
@@ -75,8 +98,8 @@ NET|net
 AFI|A.F.I.
 QoS|quality of service
 MTU|M.T.U.
-RIB|R.I.B.
-FIB|F.I.B.
+RIB|rib
+FIB|fib
 FRR|F.R.R.
 FEC|F.E.C.
 OTN|O.T.N.
@@ -103,6 +126,7 @@ IEEE|I. triple E.
 IETF|I.E.T.F.
 YANG|yang
 NSSA|N.S.S.A.
+NOC|network operations center
 
 # Addressing
 IPv4|I.P. v4
