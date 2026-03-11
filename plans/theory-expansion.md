@@ -93,10 +93,10 @@ Every theory file follows this structure:
 - [x] 3.4 BGP Policy — community encoding (standard/extended/large), AS-path regex, MED
 
 ### Module 4: MPLS
-- [ ] 4.1 LDP — discovery, session establishment, label distribution modes, liberal vs conservative
-- [ ] 4.2 RSVP-TE — PATH/RESV messages, ERO/RRO, soft state refresh, make-before-break
-- [ ] 4.3 Label Operations — push/swap/pop, penultimate hop popping, label stack encoding
-- [ ] 4.4 MPLS OAM — LSP ping/traceroute, MPLS echo request/reply, BFD for MPLS
+- [x] 4.1 LDP — discovery, session establishment, label distribution modes, liberal vs conservative
+- [x] 4.2 RSVP-TE — PATH/RESV messages, ERO/RRO, soft state refresh, make-before-break
+- [x] 4.3 Label Operations — push/swap/pop, penultimate hop popping, label stack encoding
+- [x] 4.4 MPLS OAM — LSP ping/traceroute, MPLS echo request/reply, BFD for MPLS
 
 ### Module 5: Traffic Engineering
 - [ ] 5.1 TE Fundamentals — CSPF algorithm, TE metrics, admin groups, bandwidth constraints
@@ -158,4 +158,4 @@ _Add new feature plans here as they're scoped._
 
 ---
 
-*Last updated: 2026-03-11 — Modules 2 and 3 complete*
+*Last updated: 2026-03-11 — Modules 2, 3, and 4 complete*
