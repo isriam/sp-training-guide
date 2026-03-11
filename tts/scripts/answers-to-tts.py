@@ -5,15 +5,24 @@ import sys
 
 def clean_md(text):
     """Strip markdown formatting for spoken text."""
-    text = re.sub(r'^>\s?', '', text, flags=re.MULTILINE)
-    text = text.replace('**', '')
-    text = re.sub(r'`([^`]+)`', r'\1', text)
+    # Code blocks FIRST (before inline backticks eat the fences)
     text = re.sub(r'```[\s\S]*?```', '', text)
+    # Then inline backticks
+    text = re.sub(r'`([^`]+)`', r'\1', text)
+    # Blockquote markers
+    text = re.sub(r'^>\s?', '', text, flags=re.MULTILINE)
+    # Bold/italic
+    text = text.replace('**', '')
+    # Tables
     text = re.sub(r'\|[^\n]+\|', '', text)
     text = re.sub(r'^[-|:\s]+$', '', text, flags=re.MULTILINE)
+    # Horizontal rules
     text = re.sub(r'^---+$', '', text, flags=re.MULTILINE)
+    # Headers (keep text)
     text = re.sub(r'^#{1,4}\s+', '', text, flags=re.MULTILINE)
+    # Links
     text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
+    # Excessive newlines
     text = re.sub(r'\n{3,}', '\n\n', text)
     return text.strip()
 
