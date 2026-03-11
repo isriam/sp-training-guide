@@ -99,9 +99,9 @@ Every theory file follows this structure:
 - [x] 4.4 MPLS OAM — LSP ping/traceroute, MPLS echo request/reply, BFD for MPLS
 
 ### Module 5: Traffic Engineering
-- [ ] 5.1 TE Fundamentals — CSPF algorithm, TE metrics, admin groups, bandwidth constraints
-- [ ] 5.2 RSVP-TE Advanced — FRR facility/one-to-one, auto-bandwidth, preemption, priorities
-- [ ] 5.3 Segment Routing TE — SR-TE policy architecture, BSID, candidate paths, Flex-Algo
+- [x] 5.1 TE Fundamentals — CSPF algorithm, TE metrics, admin groups, bandwidth constraints
+- [x] 5.2 RSVP-TE Advanced — FRR facility/one-to-one, auto-bandwidth, preemption, priorities
+- [x] 5.3 Segment Routing TE — SR-TE policy architecture, BSID, candidate paths, Flex-Algo
 
 ### Module 6: Segment Routing
 - [ ] 6.1 SR-MPLS Fundamentals — SID types, SRGB, IGP extensions (IS-IS TLV 135 sub-TLV, OSPF)
@@ -158,4 +158,4 @@ _Add new feature plans here as they're scoped._
 
 ---
 
-*Last updated: 2026-03-11 — Modules 2, 3, and 4 complete*
+*Last updated: 2026-03-11 — Modules 2-5 complete (14/30)*
