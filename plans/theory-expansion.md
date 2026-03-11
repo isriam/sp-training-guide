@@ -111,9 +111,11 @@ Every theory file follows this structure:
 - [x] 6.5 SRv6 Network Programming — uSID, network programming model, H.Encaps/H.Insert
 
 ### Module 7: L3VPN
-- [ ] 7.1 L3VPN Architecture — VRF mechanics, RD/RT encoding, VPNv4/v6 NLRI format
-- [ ] 7.2 MP-BGP VPNv4/VPNv6 — AFI/SAFI, extended communities, label allocation schemes
-- [ ] 7.3 Inter-AS L3VPN — Option A/B/C mechanics, ASBR label stitching, multihop MP-BGP
+- [x] 7.1 L3VPN Architecture — VRF mechanics, RD/RT encoding, VPNv4/v6 NLRI format
+- [x] 7.2 MP-BGP VPNv4/VPNv6 — AFI/SAFI, extended communities, label allocation schemes
+- [x] 7.3 Inter-AS L3VPN — Option A/B/C mechanics, ASBR label stitching, multihop MP-BGP
+- [x] 7.4 Extranet & Shared Services — RT-based route leaking, shared services VRF, internet access
+- [x] 7.5 L3VPN Scale & Convergence — PIC Edge/Core, label allocation impact, BGP scanner, GR/NSR
 
 ### Module 8: L2VPN & EVPN
 - [ ] 8.1 Legacy L2VPN — pseudowire signaling (LDP/BGP), VPLS MAC learning, PW status TLV
@@ -139,8 +141,8 @@ Every theory file follows this structure:
 - 2.4 IS-IS vs OSPF Decision Framework — design comparison, not protocol theory
 - 5.4 TE Deployment and Design — applied design
 - 6.6 SR Migration Strategies — operational planning
-- 7.4 Extranet/Shared Services — design patterns
-- 7.5 L3VPN Scale & Convergence — design/tuning
+- ~~7.4 Extranet/Shared Services — design patterns~~ (theory written — RT leaking has enough protocol depth)
+- ~~7.5 L3VPN Scale & Convergence — design/tuning~~ (theory written — PIC, label allocation, convergence mechanics)
 - 8.3 EVPN-MPLS vs VXLAN — comparison
 - 8.5 EVPN DCI — design patterns
 - 9.1 SP Transport Hierarchy — overview
@@ -158,4 +160,4 @@ _Add new feature plans here as they're scoped._
 
 ---
 
-*Last updated: 2026-03-11 — Modules 2-6 complete with TTS (19/30)*
+*Last updated: 2026-03-11 — Modules 2-7 complete (24/30, TTS through Module 6)*
