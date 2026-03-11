@@ -87,10 +87,10 @@ Every theory file follows this structure:
 - [x] 2.3 IGP Convergence Tuning — SPF scheduling, LSA/LSP throttling, BFD, PRC
 
 ### Module 3: BGP
-- [ ] 3.1 BGP Fundamentals — FSM, UPDATE processing, path attributes, NLRI encoding
-- [ ] 3.2 iBGP Design — RR mechanics, cluster behavior, ADD-PATH, ORF
-- [ ] 3.3 eBGP Peering — multihop, TTL security, GR/NSR, BFD integration
-- [ ] 3.4 BGP Policy — community encoding (standard/extended/large), AS-path regex, MED
+- [x] 3.1 BGP Fundamentals — FSM, UPDATE processing, path attributes, NLRI encoding
+- [x] 3.2 iBGP Design — RR mechanics, cluster behavior, ADD-PATH, ORF
+- [x] 3.3 eBGP Peering — multihop, TTL security, GR/NSR, BFD integration
+- [x] 3.4 BGP Policy — community encoding (standard/extended/large), AS-path regex, MED
 
 ### Module 4: MPLS
 - [ ] 4.1 LDP — discovery, session establishment, label distribution modes, liberal vs conservative
@@ -158,4 +158,4 @@ _Add new feature plans here as they're scoped._
 
 ---
 
-*Last updated: 2026-03-11 — Module 2 complete*
+*Last updated: 2026-03-11 — Modules 2 and 3 complete*
