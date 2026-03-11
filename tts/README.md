@@ -1,23 +1,31 @@
-# SP Study Guide — TTS Audio Library
+# SP Study Guide — TTS Audio Pipeline
 
-Generate spoken-word audio from study guide modules using Kokoro TTS.
+Generate spoken-word MP3 audio from study guide modules using Kokoro TTS.
 
 ## Voice Settings
 
 | Setting | Value |
 |---------|-------|
-| Engine | Kokoro (via Open Speech) |
+| Engine | Kokoro (via Open Speech on jw-pc) |
 | Voice | `will` — `am_puck(1)+am_liam(1)+am_onyx(0.5)` |
 | Speed | 1.1x |
 | Format | MP3 (`--format mp3`) |
 | Bitrate | 128kbps MP3 |
 | Max chunk | ~2000 chars per TTS call |
 
+## Storage
+
+MP3 files are stored in git alongside their source markdown in `modules/<module>/`.
+
+Each section has up to two MP3s:
+- `<section>.mp3` — section content (lecture)
+- `<section>-answers.mp3` — answer key (review Q&A)
+
 ## Pronunciation Dictionary
 
 See [`pronunciation.txt`](pronunciation.txt) — 80+ SP protocol acronyms mapped to phonetic spellings.
 
-Applied as a preprocessing step before TTS. Without this, Kokoro mispronounces most networking acronyms (IS-IS → "isis", OSPF → sneeze, etc.).
+Applied as a preprocessing step before TTS. Without this, Kokoro mispronounces most networking acronyms (IS-IS → "isis", OSPF → sneeze, BGP → gibberish).
 
 ### Format
 ```
@@ -32,73 +40,93 @@ RAW_TERM|spoken replacement
 
 ## Pipeline
 
-### 1. Convert markdown → spoken text
-Strip tables, code blocks, bullet points. Convert to natural prose paragraphs.
-Keep section headers as spoken transitions ("Next, we'll cover...").
+### Input Types
 
-### 2. Apply pronunciation dictionary
+**Section content** — markdown files in `modules/`. Strip tables, code blocks, bullet points. Convert to natural prose paragraphs. Keep section headers as spoken transitions.
+
+**Answer keys** — two formats exist:
+1. **Separate `-answers.md` files** (Modules 2–11): `## Question N` → `### Answer` structure
+2. **Inline Discussion blocks** (Modules 1, 12): `**Q1.**` → `> **Discussion:**` embedded in section files
+
+Use `answers-to-tts.py` (see Scripts below) to extract answer keys into spoken text regardless of format.
+
+### Steps
+
+#### 1. Convert markdown → spoken text
+
+For answer keys:
 ```bash
-python3 scripts/apply-pronunciation.py <input.txt> pronunciation.txt > pronounced.txt
+python3 answers-to-tts.py <answers.md> > spoken.txt
 ```
 
-### 3. Chunk text (~2000 chars per chunk)
+For section content, manually convert or write a similar extractor.
+
+#### 2. Apply pronunciation dictionary
 ```bash
-python3 scripts/chunk-text.py <pronounced.txt> --max-chars 2000
+python3 scripts/apply-pronunciation.py spoken.txt pronunciation.txt > pronounced.txt
 ```
 
-### 4. Generate audio per chunk
+#### 3. Chunk text (~2000 chars per chunk)
 ```bash
-for chunk in chunk_*.txt; do
-  kokoro-tts "$(cat $chunk)" \
-    --voice will --format opus --output "${chunk%.txt}.mp3"
+python3 scripts/chunk-text.py pronounced.txt --max-chars 2000 --output-dir /tmp --prefix chunk
+```
+
+#### 4. Generate audio per chunk (Kokoro)
+```bash
+for chunk in /tmp/chunk_*.txt; do
+  python3 ~/.openclaw/skills/voice/scripts/tts-kokoro \
+    "$(cat "$chunk")" \
+    --voice will --format mp3 \
+    --output "${chunk%.txt}.mp3"
 done
 ```
 
-### 5. Concatenate chunks
+#### 5. Concatenate chunks → final MP3
 ```bash
-# Build file list
-ls chunk_*.mp3
-*.ogg | sed 's/.*/file '\''&'\''/' > concat.txt
-# Merge
-ffmpeg -y -f concat -safe 0 -i concat.txt -c:a libmp3lame -b:a 128k output.mp3
+ls /tmp/chunk_*.mp3 | sort | sed "s|.*|file '&'|" > /tmp/concat.txt
+ffmpeg -y -f concat -safe 0 -i /tmp/concat.txt -c:a libmp3lame -b:a 128k output.mp3
 ```
 
-### 6. Clean up
+#### 6. Clean up
 ```bash
-rm chunk_*.txt chunk_*.mp3
-*.ogg concat.txt
+rm /tmp/chunk_*.txt /tmp/chunk_*.mp3 /tmp/concat.txt
 ```
 
-## Module Index
+### Batch Generation
 
-| Module | Section | Duration | Status |
-|--------|---------|----------|--------|
-| 02 | 2.1 IS-IS Deep Dive | ~9 min | ✅ Generated (v2 w/ pronunciation) |
-| 02 | 2.2 OSPF in SP Networks | | 🔲 |
-| 03 | 3.x BGP Deep Dive | | 🔲 |
-| 04 | 4.x MPLS Fundamentals | | 🔲 |
-| 05 | 5.x Traffic Engineering | | 🔲 |
-| 06 | 6.1-6.7 Segment Routing | | 🔲 |
-| 07 | 7.1-7.5 L3VPN | | 🔲 |
-| 08 | 8.1-8.5 L2VPN & EVPN | | 🔲 |
-| 09 | 9.1-9.6 Transport & Optical | | 🔲 |
-| 10 | 10.1-10.3 Network Slicing & 5G | | 🔲 |
-| 11 | 11.1-11.5 Automation & Operations | | 🔲 |
-| 12 | 12.1-12.5 Design Case Studies | | 🔲 |
-| 01 | 1.x Foundations | | 🔲 |
+Use `gen-module-tts.sh` to generate all answer key MP3s for an entire module:
 
-## Storage
+```bash
+bash tts/scripts/gen-module-tts.sh modules/03-bgp
+```
 
-Audio files are NOT stored in git (too large — ~25 hours estimated).
+This runs the full pipeline (extract → pronounce → chunk → TTS → concat) for every `-answers.md` file in the module directory. Skips sections that already have an MP3.
 
-Options:
-- Local NAS or shared storage
-- Generate on demand using this pipeline
-- Future: host on a simple web server for mobile playback
+## Scripts
 
-## Estimated Total
+| Script | Purpose |
+|--------|---------|
+| `scripts/apply-pronunciation.py` | Apply pronunciation dictionary to text |
+| `scripts/chunk-text.py` | Split text at paragraph boundaries for chunking |
+| `scripts/generate-audio.sh` | Single-file TTS generator (section content) |
+| `scripts/gen-module-tts.sh` | Batch answer key TTS for an entire module |
+| `scripts/answers-to-tts.py` | Extract answer key markdown → spoken text |
 
-- 12 modules, ~60 sections
-- ~223K words source material
-- ~25 hours audio at 1.1x speed
-- ~300MB total at 128kbps MP3
+## Prerequisites
+
+- **Open Speech server** running on jw-pc (`192.0.2.24:8100`) — provides Kokoro TTS
+- **ffmpeg** — for MP3 concatenation
+- **Voice skill** — `~/.openclaw/skills/voice/scripts/tts-kokoro` must be available
+
+Check availability:
+```bash
+python3 ~/.openclaw/skills/voice/scripts/tts-kokoro --check
+```
+
+## Adding New Pronunciations
+
+Edit `pronunciation.txt`. Test with:
+```bash
+echo "The OSPF LSDB contains IS-IS TLVs" | python3 scripts/apply-pronunciation.py /dev/stdin pronunciation.txt
+# Expected: The O.S.P.F. L.S.D.B. contains I.S.I.S. T.L.V.s
+```

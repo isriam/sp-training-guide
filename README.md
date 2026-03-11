@@ -63,14 +63,14 @@ The [`practice-exams/`](practice-exams/) directory contains 130 IE-SP-level ques
 
 ## Audio Library
 
-The [`tts/`](tts/) directory contains tools to generate a spoken-word audio version of the entire guide:
+Every section includes a spoken-word MP3 stored alongside the markdown in `modules/`. Answer key MP3s are added as they're generated.
 
-- **Pronunciation dictionary** — 80+ SP protocol acronyms mapped to phonetic spellings
-- **Pipeline scripts** — automated markdown-to-speech conversion
-- **Voice** — Kokoro TTS, custom voice blend at 1.1x speed
-- **Format** — MP3 at 128kbps for universal device compatibility
+The [`tts/`](tts/) directory contains the full TTS pipeline — pronunciation dictionary, chunking scripts, batch generation tools. See [`tts/README.md`](tts/README.md) for how to generate or regenerate audio.
 
-Estimated full audio library: **~22 hours, ~300MB**.
+- **Voice** — Kokoro TTS, `am_puck(1)+am_liam(1)+am_onyx(0.5)` blend at 1.1x
+- **Format** — MP3 at 128kbps
+- **Pronunciation** — 80+ SP acronyms mapped to phonetic spellings (IS-IS, OSPF, BGP, etc.)
+- **Two tracks per section** — `<section>.mp3` (lecture) + `<section>-answers.mp3` (Q&A)
 
 ## Learning Paths
 
