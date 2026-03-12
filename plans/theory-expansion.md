@@ -160,4 +160,4 @@ _Add new feature plans here as they're scoped._
 
 ---
 
-*Last updated: 2026-03-11 — ALL 33 theory markdown files complete. TTS through Module 9 (30/33). Modules 10-11 TTS pending.*
+*Last updated: 2026-03-11 — ALL 33 theory files complete — markdown AND TTS. Project finished.*
