@@ -123,9 +123,9 @@ Every theory file follows this structure:
 - [x] 8.4 EVPN Multi-Homing — ESI encoding, DF election algorithm, aliasing, split-horizon
 
 ### Module 9: Transport & Optical
-- [ ] 9.2 DWDM Fundamentals — wavelength physics, EDFA gain/noise, Raman amplification, ROADM architecture
-- [ ] 9.3 OTN — ODU/OTU framing, TCM fields, FEC (GFEC/EFEC/oFEC), GCC channels
-- [ ] 9.5 Coherent Optics — modulation theory (QPSK/8QAM/16QAM), DSP pipeline, PCS, Shannon limit
+- [x] 9.2 DWDM Fundamentals — wavelength physics, EDFA gain/noise, Raman amplification, ROADM architecture
+- [x] 9.3 OTN — ODU/OTU framing, TCM fields, FEC (GFEC/EFEC/oFEC), GCC channels
+- [x] 9.5 Coherent Optics — modulation theory (QPSK/8QAM/16QAM), DSP pipeline, PCS, Shannon limit
 
 ### Module 10: Slicing
 - [ ] 10.2 FlexE — FlexE shim layer, calendar slots, client/group mapping, OIF spec
@@ -160,4 +160,4 @@ _Add new feature plans here as they're scoped._
 
 ---
 
-*Last updated: 2026-03-11 — Modules 2-8 complete with TTS (27/30)*
+*Last updated: 2026-03-11 — Modules 2-9 theory complete (30/33, TTS through Module 8)*
