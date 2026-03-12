@@ -1,6 +1,6 @@
 # Service Provider Study Guide
 
-An operations-first training guide for engineers building and running service provider backbone networks. 220,000+ words across 12 modules covering everything from IS-IS adjacency formation to SRv6 network programming to coherent optics at 800G.
+An operations-first training guide for engineers building and running service provider backbone networks. 420,000+ words across 12 modules covering everything from IS-IS adjacency formation to SRv6 network programming to coherent optics at 800G.
 
 ## What This Is
 
@@ -39,25 +39,27 @@ The Juniper equivalent covers comparable depth from the Junos perspective. This 
 
 | Module | Topic | Sections | Words | Audio |
 |--------|-------|----------|-------|-------|
-| **01** | [Foundations](modules/01-foundations/) | 1 | 6,200 | ~37 min |
-| **02** | [IGP at Scale](modules/02-igp/) | 4 | 9,000 | ~52 min |
-| **03** | [BGP at SP Scale](modules/03-bgp/) | 4 | 10,900 | ~64 min |
-| **04** | [MPLS Core Operations](modules/04-mpls/) | 4 | 14,100 | ~84 min |
-| **05** | [Traffic Engineering](modules/05-te/) | 4 | 12,500 | ~73 min |
-| **06** | [Segment Routing](modules/06-sr/) | 6 | 23,600 | ~140 min |
-| **07** | [L3VPN Services](modules/07-l3vpn/) | 5 | 25,200 | ~150 min |
-| **08** | [L2VPN & EVPN](modules/08-l2vpn-evpn/) | 5 | 27,100 | ~161 min |
-| **09** | [Transport & Optical](modules/09-transport/) | 5 | 27,600 | ~164 min |
-| **10** | [Network Slicing & 5G](modules/10-slicing/) | 3 | 15,900 | ~95 min |
-| **11** | [Automation & Telemetry](modules/11-automation/) | 5 | 18,700 | ~111 min |
-| **12** | [Design Case Studies](modules/12-case-studies/) | 5 | 29,300 | ~175 min |
-| | **Total** | **51** | **220,000+** | **~22 hours** |
+| **01** | [Foundations](modules/01-foundations/) | 1 | 7,600 | ~35 min |
+| **02** | [IGP at Scale](modules/02-igp/) | 4 | 28,300 | ~139 min |
+| **03** | [BGP at SP Scale](modules/03-bgp/) | 4 | 30,400 | ~166 min |
+| **04** | [MPLS Core Operations](modules/04-mpls/) | 4 | 31,600 | ~172 min |
+| **05** | [Traffic Engineering](modules/05-te/) | 4 | 27,500 | ~143 min |
+| **06** | [Segment Routing](modules/06-sr/) | 6 | 42,100 | ~234 min |
+| **07** | [L3VPN Services](modules/07-l3vpn/) | 5 | 50,100 | ~173 min |
+| **08** | [L2VPN & EVPN](modules/08-l2vpn-evpn/) | 5 | 42,500 | ~205 min |
+| **09** | [Transport & Optical](modules/09-transport/) | 5 | 44,500 | ~194 min |
+| **10** | [Network Slicing & 5G](modules/10-slicing/) | 3 | 25,800 | ~120 min |
+| **11** | [Automation & Telemetry](modules/11-automation/) | 5 | 32,300 | ~133 min |
+| **12** | [Design Case Studies](modules/12-case-studies/) | 5 | 59,000 | ~122 min* |
+| | **Total** | **51** | **421,700+** | **~30.5 hours** |
+
+*Module 12 audio is design + answer tracks only (no theory files — case studies are applied design, not protocol theory).
 
 ## Practice Exams
 
 The [`practice-exams/`](practice-exams/) directory contains 130 IE-SP-level questions with detailed answer explanations:
 
-- Module-specific question banks (BGP, SR, L3VPN, EVPN)
+- Module-specific question banks (BGP, SR, L3VPN, EVPN) — 20 questions each
 - Full 50-question mixed mock exam
 - Dual Opus-reviewed for accuracy (multiple CRITICAL corrections applied — RFC 4724, RFC 4577, IS-IS auth scope, TI-LFA defaults)
 
@@ -70,7 +72,7 @@ The [`tts/`](tts/) directory contains the full TTS pipeline — pronunciation di
 - **Voice** — Kokoro TTS, `am_puck(1)+am_liam(1)+am_onyx(0.5)` blend at 1.1x
 - **Format** — MP3 at 128kbps
 - **Pronunciation** — 80+ SP acronyms mapped to phonetic spellings (IS-IS, OSPF, BGP, etc.)
-- **Two tracks per section** — `<section>.mp3` (lecture) + `<section>-answers.mp3` (Q&A)
+- **Up to three tracks per section** — `<section>.mp3` (lecture) + `<section>-answers.mp3` (Q&A) + `<section>-theory.mp3` (protocol deep-dive, Modules 2–11)
 
 ## Learning Paths
 
@@ -116,7 +118,6 @@ You know MPLS and BGP. Start with TE evolution (RSVP-TE → SR-TE), then EVPN, t
 - [LAB-ENVIRONMENT.md](LAB-ENVIRONMENT.md) — Lab topology and platform requirements
 - [SOURCES.md](SOURCES.md) — References and source material
 - [STUDY-PATH.md](STUDY-PATH.md) — Detailed study sequencing
-- [PLAN.md](PLAN.md) — Curriculum development plan
 
 ## License
 
