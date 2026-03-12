@@ -160,4 +160,4 @@ _Add new feature plans here as they're scoped._
 
 ---
 
-*Last updated: 2026-03-11 — Modules 2-8 complete (27/30, TTS through Module 7)*
+*Last updated: 2026-03-11 — Modules 2-8 complete with TTS (27/30)*
