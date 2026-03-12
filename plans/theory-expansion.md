@@ -118,9 +118,9 @@ Every theory file follows this structure:
 - [x] 7.5 L3VPN Scale & Convergence — PIC Edge/Core, label allocation impact, BGP scanner, GR/NSR
 
 ### Module 8: L2VPN & EVPN
-- [ ] 8.1 Legacy L2VPN — pseudowire signaling (LDP/BGP), VPLS MAC learning, PW status TLV
-- [ ] 8.2 EVPN Fundamentals — Route types 1-5 format, MAC/IP advertisement, ARP suppression
-- [ ] 8.4 EVPN Multi-Homing — ESI encoding, DF election algorithm, aliasing, split-horizon
+- [x] 8.1 Legacy L2VPN — pseudowire signaling (LDP/BGP), VPLS MAC learning, PW status TLV
+- [x] 8.2 EVPN Fundamentals — Route types 1-5 format, MAC/IP advertisement, ARP suppression
+- [x] 8.4 EVPN Multi-Homing — ESI encoding, DF election algorithm, aliasing, split-horizon
 
 ### Module 9: Transport & Optical
 - [ ] 9.2 DWDM Fundamentals — wavelength physics, EDFA gain/noise, Raman amplification, ROADM architecture
@@ -160,4 +160,4 @@ _Add new feature plans here as they're scoped._
 
 ---
 
-*Last updated: 2026-03-11 — Modules 2-7 complete with TTS (24/30)*
+*Last updated: 2026-03-11 — Modules 2-8 complete (27/30, TTS through Module 7)*
