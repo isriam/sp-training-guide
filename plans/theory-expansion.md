@@ -128,13 +128,13 @@ Every theory file follows this structure:
 - [x] 9.5 Coherent Optics — modulation theory (QPSK/8QAM/16QAM), DSP pipeline, PCS, Shannon limit
 
 ### Module 10: Slicing
-- [ ] 10.2 FlexE — FlexE shim layer, calendar slots, client/group mapping, OIF spec
+- [x] 10.2 FlexE — FlexE shim layer, calendar slots, client/group mapping, OIF spec
 
 ### Module 11: Automation
-- [ ] 11.1 Model-Driven Networking — YANG tree structure, NETCONF layers (SSH/RPC/content), gRPC/gNMI
-- [ ] 11.2 Streaming Telemetry — dial-in vs dial-out, gNMI Subscribe modes, sensor paths, protobuf encoding
+- [x] 11.1 Model-Driven Networking — YANG tree structure, NETCONF layers (SSH/RPC/content), gRPC/gNMI
+- [x] 11.2 Streaming Telemetry — dial-in vs dial-out, gNMI Subscribe modes, sensor paths, protobuf encoding
 
-**Total: ~30 theory files**
+**Total: 33 theory files — ALL COMPLETE ✅**
 
 ### Sections that do NOT need theory files
 - Module 1 (Foundations) — already conceptual
@@ -160,4 +160,4 @@ _Add new feature plans here as they're scoped._
 
 ---
 
-*Last updated: 2026-03-11 — Modules 2-9 complete with TTS (30/33)*
+*Last updated: 2026-03-11 — ALL 33 theory markdown files complete. TTS through Module 9 (30/33). Modules 10-11 TTS pending.*
