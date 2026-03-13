@@ -92,6 +92,20 @@ NLRI|N.L.R.I.
 SRLG|S.R.L.G.
 OSNR|O.S.N.R.
 
+# IS-IS / IGP specific
+NSAP|N.S.A.P.
+NLPID|N.L.P.I.D.
+CLNP|C.L.N.P.
+OSI|O.S.I.
+ISO|I.S.O.
+P2P|point to point
+CSPF|C.S.P.F.
+BDR|B.D.R.
+DR|D.R.
+GRE|G.R.E.
+HMAC|H. mac
+PRC|P.R.C.
+
 # Routing/switching terms
 BFD|B.F.D.
 LDP|L.D.P.
