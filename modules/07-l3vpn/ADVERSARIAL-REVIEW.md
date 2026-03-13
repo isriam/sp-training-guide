@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-Overall the answer keys are **strong** — 80–90% of the content is accurate, well-structured, and at exam-quality depth. However, I found **14 distinct issues** across the 5 files, including **3 critical CLI errors**, **2 dangerous technical misstatements**, and several misleading claims or missing edge cases. Any of these could cost a candidate points or, worse, cause a production outage if used as a reference.
+Overall the answer keys are **strong** — 80–90% of the content is accurate, well-structured, and at exam-quality depth. However, I found **14 distinct issues** across the 5 files, including **1 critical CLI error** and several misleading claims or missing edge cases. Any of these could cost a candidate points or, worse, cause a production outage if used as a reference.
 
 ---
 
@@ -227,7 +227,7 @@ vrf CUST-X
 
 ## Summary: Issues by Attack Vector
 
-### 1. WRONG CLI (3 Critical, 2 Medium)
+### 1. WRONG CLI (1 Critical, 2 Medium)
 | # | File | Issue | Severity |
 |---|------|-------|----------|
 | 1 | 7.1 Q1 | SOO missing parentheses | Medium |

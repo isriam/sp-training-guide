@@ -6,7 +6,7 @@ This module focuses on the service-provider problem space around l3vpn. It conne
 
 | Section | Topic | What it covers | Est. time |
 |---|---|---|---:|
-| 7.1 | [7.1 — MPLS L3VPN Architecture](7.1-l3vpn-architecture.md) | MPLS L3VPN (RFC 4364, formerly RFC 2547bis) is the backbone revenue engine of every service pro... | 4 min |
+| 7.1 | [7.1 — MPLS L3VPN Architecture](7.1-l3vpn-architecture.md) | MPLS L3VPN (RFC 4364, which obsoletes RFC 2547 and followed the `rfc2547bis` draft lineage) is the backbone revenue engine of every service pro... | 4 min |
 | 7.2 | [7.2 — MP-BGP for VPNv4/VPNv6](7.2-mp-bgp-vpnv4-vpnv6.md) | MP-BGP is the control plane that makes L3VPN scale. Without it, every PE would need a full mesh... | 4 min |
 | 7.3 | [7.3 — Inter-AS L3VPN](7.3-inter-as-l3vpn.md) | When a single VPN customer spans multiple autonomous systems — different providers, different r... | 5 min |
 | 7.4 | [7.4 — Extranet & Shared Services](7.4-extranet-shared-services.md) | Every SP eventually gets the request: "We need Customer A to reach Customer B's database." Or: ... | 5 min |
