@@ -57,6 +57,11 @@ gRPC|g.R.P.C.
 uSID|micro-SID
 oFEC|open F.E.C.
 
+# Unicode arrows and symbols
+→|to
+←|from
+↔|bidirectional
+
 # Common standalone acronyms
 SP|service provider
 
