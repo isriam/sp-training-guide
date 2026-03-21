@@ -127,6 +127,14 @@ You know MPLS and BGP. Start with TE evolution (RSVP-TE → SR-TE), then EVPN, t
 | 8405 | SPF Back-Off Algorithm |
 | 5305 | IS-IS Extensions for TE |
 
+## Web Apps
+
+The [`apps/`](apps/) directory contains companion web tools:
+
+| App | Description |
+|-----|-------------|
+| [Ham Radio Technician Study](apps/ham-radio-study/) | PWA for studying the FCC Technician Class (Element 2) exam — 411 questions, flashcards, practice tests, offline support |
+
 ## Related Files
 
 - [LAB-ENVIRONMENT.md](LAB-ENVIRONMENT.md) — Lab topology and platform requirements

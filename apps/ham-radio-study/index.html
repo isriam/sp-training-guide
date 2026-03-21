@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#e94560" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1a2e" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="HamStudy">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Ham Radio Technician Study</title>
+<style>
+/* ===== CSS RESET & VARIABLES ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f0f4f8;
+  --bg2: #ffffff;
+  --bg3: #e2e8f0;
+  --surface: #ffffff;
+  --border: #cbd5e1;
+  --text: #1e293b;
+  --text2: #64748b;
+  --accent: #e94560;
+  --accent2: #c2185b;
+  --green: #22c55e;
+  --red: #ef4444;
+  --yellow: #f59e0b;
+  --blue: #3b82f6;
+  --purple: #8b5cf6;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.14);
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --transition: 0.2s ease;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+[data-theme="dark"] {
+  --bg: #0f0f1a;
+  --bg2: #1a1a2e;
+  --bg3: #252540;
+  --surface: #16213e;
+  --border: #2d3561;
+  --text: #e2e8f0;
+  --text2: #94a3b8;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.6);
+}
+
+html { height: 100%; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100%;
+  transition: background var(--transition), color var(--transition);
+  overscroll-behavior: none;
+}
+
+/* ===== LAYOUT ===== */
+#app {
+  max-width: 640px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: calc(60px + var(--safe-top));
+  padding-bottom: calc(72px + var(--safe-bottom));
+}
+
+/* ===== TOP BAR ===== */
+#topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: calc(12px + var(--safe-top)) 16px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+#topbar-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+#topbar-title span { color: var(--accent); }
+#theme-btn {
+  background: var(--bg3);
+  border: none;
+  border-radius: 50%;
+  width: 38px; height: 38px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text);
+  transition: background var(--transition);
+  flex-shrink: 0;
+}
+#theme-btn:hover { background: var(--border); }
+
+/* ===== BOTTOM NAV ===== */
+#nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 100;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  display: flex;
+  padding: 8px 0 calc(8px + var(--safe-bottom));
+}
+.nav-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 4px;
+  color: var(--text2);
+  font-size: 11px;
+  font-weight: 500;
+  transition: color var(--transition);
+  min-height: 52px;
+}
+.nav-btn .nav-icon { font-size: 22px; line-height: 1; }
+.nav-btn.active { color: var(--accent); }
+.nav-btn:active { opacity: 0.7; }
+
+/* ===== PAGES ===== */
+.page { display: none; flex-direction: column; gap: 16px; padding: 16px; }
+.page.active { display: flex; }
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 20px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.card-sm {
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--font);
+  transition: all var(--transition);
+  min-height: 50px;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent2); }
+.btn-secondary { background: var(--bg3); color: var(--text); }
+.btn-secondary:hover { background: var(--border); }
+.btn-green { background: var(--green); color: white; }
+.btn-red { background: var(--red); color: white; }
+.btn-full { width: 100%; }
+.btn-icon { padding: 12px; min-height: 44px; }
+
+/* ===== PROGRESS BAR ===== */
+.progress-bar {
+  height: 8px;
+  background: var(--bg3);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.4s ease;
+  background: var(--accent);
+}
+.progress-fill.green { background: var(--green); }
+.progress-fill.blue { background: var(--blue); }
+.progress-fill.yellow { background: var(--yellow); }
+
+/* ===== HOME PAGE ===== */
+.readiness-card {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--purple) 100%);
+  color: white;
+  border: none;
+}
+.readiness-card .card-label { color: rgba(255,255,255,0.8); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.readiness-score { font-size: 64px; font-weight: 800; line-height: 1; margin: 8px 0 4px; }
+.readiness-desc { font-size: 14px; color: rgba(255,255,255,0.85); }
+.readiness-bar { background: rgba(255,255,255,0.25); margin-top: 16px; }
+.readiness-bar .progress-fill { background: white; }
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: center;
+}
+.stat-num { font-size: 28px; font-weight: 800; color: var(--accent); }
+.stat-label { font-size: 12px; color: var(--text2); margin-top: 2px; font-weight: 500; }
+
+.quick-btns { display: flex; flex-direction: column; gap: 12px; }
+.quick-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: all var(--transition);
+  -webkit-tap-highlight-color: transparent;
+}
+.quick-btn:hover { border-color: var(--accent); transform: translateY(-1px); box-shadow: var(--shadow); }
+.quick-btn:active { transform: scale(0.98); }
+.quick-btn-icon { font-size: 32px; width: 52px; height: 52px; background: var(--bg3); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.quick-btn-text { flex: 1; }
+.quick-btn-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.quick-btn-desc { font-size: 13px; color: var(--text2); margin-top: 2px; }
+.quick-btn-arrow { color: var(--text2); font-size: 20px; }
+
+.streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: white;
+  border-radius: 99px;
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* ===== SECTION CARDS ===== */
+.section-list { display: flex; flex-direction: column; gap: 10px; }
+.section-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: all var(--transition);
+  -webkit-tap-highlight-color: transparent;
+}
+.section-card:hover { border-color: var(--accent); }
+.section-card:active { transform: scale(0.98); }
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.section-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.section-count { font-size: 12px; color: var(--text2); font-weight: 500; }
+.section-stats { display: flex; gap: 12px; margin-top: 10px; font-size: 12px; color: var(--text2); }
+.section-stat { display: flex; align-items: center; gap: 4px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.dot-green { background: var(--green); }
+.dot-red { background: var(--red); }
+.dot-gray { background: var(--border); }
+
+/* ===== FLASHCARD ===== */
+#fc-page { position: relative; }
+.fc-header { display: flex; align-items: center; gap: 12px; }
+.fc-header-info { flex: 1; }
+.fc-counter { font-size: 14px; color: var(--text2); font-weight: 500; }
+.fc-section-label { font-size: 12px; color: var(--accent); font-weight: 600; }
+.fc-progress { margin: 4px 0; }
+
+.flashcard-scene {
+  perspective: 1200px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 280px;
+  position: relative;
+}
+.flashcard-inner {
+  width: 100%;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  position: relative;
+}
+.flashcard-inner.flipped { transform: rotateY(180deg); }
+.flashcard-face {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flashcard-back {
+  position: absolute;
+  top: 0; left: 0;
+  transform: rotateY(180deg);
+}
+.fc-qid { font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 0.05em; margin-bottom: 8px; }
+.fc-question { font-size: 17px; font-weight: 600; line-height: 1.5; color: var(--text); min-height: 60px; }
+.fc-tap-hint { font-size: 12px; color: var(--text2); text-align: center; margin-top: 16px; }
+.fc-answer-label { font-size: 12px; font-weight: 600; color: var(--green); letter-spacing: 0.05em; margin-bottom: 8px; text-transform: uppercase; }
+.fc-answer { font-size: 18px; font-weight: 700; color: var(--text); line-height: 1.4; margin-bottom: 14px; }
+.fc-all-answers { border-top: 1px solid var(--border); padding-top: 14px; margin-top: 14px; }
+.fc-all-label { font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+.fc-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.fc-option.correct { background: rgba(34,197,94,0.12); }
+.fc-option.wrong { background: rgba(239,68,68,0.08); color: var(--text2); }
+.fc-option-letter { font-weight: 700; color: var(--text2); min-width: 18px; }
+.fc-option.correct .fc-option-letter { color: var(--green); }
+
+.fc-actions { display: flex; gap: 12px; }
+.fc-actions .btn { flex: 1; }
+
+.fc-controls { display: flex; gap: 8px; align-items: center; }
+.fc-tts-btn { background: var(--bg3); border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; color: var(--text); transition: background var(--transition); flex-shrink: 0; }
+.fc-tts-btn:hover { background: var(--border); }
+.fc-tts-btn.speaking { color: var(--accent); }
+
+/* ===== SECTION SELECT ===== */
+.fc-mode-select { display: flex; flex-direction: column; gap: 12px; }
+.mode-option {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  cursor: pointer;
+  transition: all var(--transition);
+  -webkit-tap-highlight-color: transparent;
+}
+.mode-option:hover, .mode-option.selected { border-color: var(--accent); background: rgba(233,69,96,0.05); }
+.mode-option-title { font-size: 15px; font-weight: 700; }
+.mode-option-desc { font-size: 13px; color: var(--text2); margin-top: 3px; }
+
+/* ===== PRACTICE TEST ===== */
+.test-status { display: flex; align-items: center; justify-content: space-between; }
+.test-qnum { font-size: 14px; color: var(--text2); font-weight: 500; }
+.test-timer {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 16px; font-weight: 700; color: var(--text);
+  background: var(--bg3); padding: 6px 14px; border-radius: 99px;
+}
+.test-timer.warning { color: var(--red); background: rgba(239,68,68,0.1); }
+
+.test-question-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  box-shadow: var(--shadow);
+}
+.test-qid { font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 0.05em; }
+.test-question { font-size: 17px; font-weight: 600; line-height: 1.5; margin-top: 10px; color: var(--text); }
+
+.answer-options { display: flex; flex-direction: column; gap: 10px; }
+.answer-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: left;
+  width: 100%;
+  font-family: var(--font);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.4;
+  -webkit-tap-highlight-color: transparent;
+}
+.answer-option:hover:not(:disabled) { border-color: var(--accent); background: rgba(233,69,96,0.05); }
+.answer-option:active:not(:disabled) { transform: scale(0.99); }
+.answer-option.selected { border-color: var(--blue); background: rgba(59,130,246,0.08); }
+.answer-option.correct { border-color: var(--green); background: rgba(34,197,94,0.1); }
+.answer-option.wrong { border-color: var(--red); background: rgba(239,68,68,0.08); }
+.answer-option:disabled { cursor: default; }
+.answer-letter {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--bg3); color: var(--text2);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 13px; flex-shrink: 0;
+  transition: all var(--transition);
+}
+.answer-option.selected .answer-letter { background: var(--blue); color: white; }
+.answer-option.correct .answer-letter { background: var(--green); color: white; }
+.answer-option.wrong .answer-letter { background: var(--red); color: white; }
+
+.test-nav { display: flex; gap: 12px; }
+.test-nav .btn { flex: 1; }
+
+/* ===== SCORE / RESULTS ===== */
+.score-header { text-align: center; padding: 8px 0; }
+.score-emoji { font-size: 56px; line-height: 1; margin-bottom: 12px; }
+.score-num { font-size: 52px; font-weight: 800; }
+.score-num.pass { color: var(--green); }
+.score-num.fail { color: var(--red); }
+.score-label { font-size: 18px; font-weight: 600; color: var(--text2); margin-top: 4px; }
+.score-sub { font-size: 14px; color: var(--text2); margin-top: 8px; }
+
+.review-list { display: flex; flex-direction: column; gap: 12px; }
+.review-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+}
+.review-item.wrong-item { border-left: 4px solid var(--red); }
+.review-item.right-item { border-left: 4px solid var(--green); }
+.review-qid { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 6px; }
+.review-qid.wrong-item { color: var(--red); }
+.review-qid.right-item { color: var(--green); }
+.review-q { font-size: 14px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+.review-answer { font-size: 13px; color: var(--text2); }
+.review-answer .right { color: var(--green); font-weight: 600; }
+.review-answer .wrong-ans { color: var(--red); text-decoration: line-through; }
+
+/* ===== PROGRESS PAGE ===== */
+.section-progress-list { display: flex; flex-direction: column; gap: 10px; }
+.sp-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+.sp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.sp-title { font-size: 14px; font-weight: 700; }
+.sp-pct { font-size: 14px; font-weight: 700; color: var(--accent); }
+.sp-detail { display: flex; gap: 16px; margin-top: 8px; font-size: 12px; color: var(--text2); }
+
+.history-list { display: flex; flex-direction: column; gap: 8px; }
+.history-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+.history-score { font-weight: 700; font-size: 16px; min-width: 48px; }
+.history-score.pass { color: var(--green); }
+.history-score.fail { color: var(--red); }
+.history-info { flex: 1; }
+.history-date { font-size: 12px; color: var(--text2); }
+
+/* ===== BADGES ===== */
+.badges-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.badge-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 10px;
+  text-align: center;
+  transition: all var(--transition);
+}
+.badge-card.earned { border-color: var(--yellow); background: rgba(245,158,11,0.05); }
+.badge-card.earned .badge-icon { filter: none; }
+.badge-icon { font-size: 32px; filter: grayscale(1) opacity(0.4); }
+.badge-name { font-size: 11px; font-weight: 600; margin-top: 6px; color: var(--text2); }
+.badge-card.earned .badge-name { color: var(--text); }
+
+/* ===== EMPTY / LOADING STATES ===== */
+.empty-state { text-align: center; padding: 40px 20px; color: var(--text2); }
+.empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; }
+.empty-state p { font-size: 15px; }
+
+/* ===== PAGE TITLE ===== */
+.page-title { font-size: 22px; font-weight: 800; color: var(--text); }
+.page-sub { font-size: 14px; color: var(--text2); margin-top: 4px; }
+
+/* ===== FILTER CHIPS ===== */
+.chip-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.chip-row::-webkit-scrollbar { display: none; }
+.chip {
+  flex-shrink: 0;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 99px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text2);
+  transition: all var(--transition);
+  -webkit-tap-highlight-color: transparent;
+}
+.chip.active { border-color: var(--accent); color: var(--accent); background: rgba(233,69,96,0.05); }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: flex-end; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--transition);
+  padding-bottom: var(--safe-bottom);
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--bg2);
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 24px;
+  width: 100%; max-width: 640px;
+  transform: translateY(40px);
+  transition: transform var(--transition);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+.modal-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+.modal-sub { font-size: 14px; color: var(--text2); margin-bottom: 20px; }
+.modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+
+/* ===== MISC ===== */
+.divider { height: 1px; background: var(--border); }
+.label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text2); }
+.bold { font-weight: 700; }
+.text-accent { color: var(--accent); }
+.text-green { color: var(--green); }
+.text-red { color: var(--red); }
+.text-muted { color: var(--text2); }
+.mt-4 { margin-top: 16px; }
+.mt-2 { margin-top: 8px; }
+.gap-2 { gap: 8px; }
+.flex-row { display: flex; align-items: center; gap: 10px; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.small { font-size: 13px; }
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div id="topbar">
+  <div id="topbar-title">📻 <span>Ham</span>Study</div>
+  <button id="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode">🌙</button>
+</div>
+
+<!-- Main App -->
+<div id="app">
+
+  <!-- HOME PAGE -->
+  <div id="page-home" class="page active">
+    <div class="card readiness-card">
+      <div class="card-label">Exam Readiness</div>
+      <div class="readiness-score" id="readiness-score">0%</div>
+      <div class="readiness-desc" id="readiness-desc">Start studying to track your progress</div>
+      <div class="progress-bar readiness-bar mt-4">
+        <div class="progress-fill" id="readiness-bar" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-num" id="stat-seen">0</div>
+        <div class="stat-label">Questions Seen</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-mastered">0</div>
+        <div class="stat-label">Mastered</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-tests">0</div>
+        <div class="stat-label">Tests Taken</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-streak">0</div>
+        <div class="stat-label">🔥 Day Streak</div>
+      </div>
+    </div>
+
+    <div class="quick-btns">
+      <button class="quick-btn" onclick="startQuickFlashcards()">
+        <div class="quick-btn-icon">🃏</div>
+        <div class="quick-btn-text">
+          <div class="quick-btn-title">Quick Study</div>
+          <div class="quick-btn-desc">Flashcards · focus on weak spots</div>
+        </div>
+        <div class="quick-btn-arrow">›</div>
+      </button>
+      <button class="quick-btn" onclick="startPracticeTest()">
+        <div class="quick-btn-icon">📝</div>
+        <div class="quick-btn-text">
+          <div class="quick-btn-title">Practice Exam</div>
+          <div class="quick-btn-desc">35 questions · 26 to pass (74%)</div>
+        </div>
+        <div class="quick-btn-arrow">›</div>
+      </button>
+      <button class="quick-btn" onclick="showPage('sections')">
+        <div class="quick-btn-icon">📚</div>
+        <div class="quick-btn-text">
+          <div class="quick-btn-title">Study by Section</div>
+          <div class="quick-btn-desc">T1–T0 · target weak areas</div>
+        </div>
+        <div class="quick-btn-arrow">›</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- SECTIONS PAGE -->
+  <div id="page-sections" class="page">
+    <div>
+      <div class="page-title">Study by Section</div>
+      <div class="page-sub">411 questions across 10 subelements</div>
+    </div>
+    <div class="section-list" id="section-list"></div>
+  </div>
+
+  <!-- FLASHCARD PAGE -->
+  <div id="page-flashcard" class="page">
+    <!-- Mode selector shown first -->
+    <div id="fc-mode-select">
+      <div class="page-title">Flashcards</div>
+      <div class="page-sub">Select study mode</div>
+      <div class="fc-mode-select mt-4" id="section-chooser"></div>
+      <div class="mt-4">
+        <button class="btn btn-primary btn-full" onclick="startFlashcards()">Start Studying</button>
+      </div>
+    </div>
+
+    <!-- Active flashcard session -->
+    <div id="fc-session" style="display:none">
+      <div class="fc-header">
+        <div class="fc-header-info">
+          <div class="fc-counter"><span id="fc-current">1</span> / <span id="fc-total">0</span></div>
+          <div class="fc-section-label" id="fc-section-label">All Questions</div>
+        </div>
+        <button class="fc-tts-btn" id="fc-tts-btn" onclick="speakQuestion()" title="Read question aloud">🔊</button>
+        <button class="btn btn-secondary" style="padding:8px 14px;font-size:13px;" onclick="endFlashcards()">✕ Exit</button>
+      </div>
+
+      <div class="progress-bar fc-progress">
+        <div class="progress-fill" id="fc-bar" style="width:0%"></div>
+      </div>
+
+      <div class="flashcard-scene" id="flashcard-scene" onclick="flipCard()">
+        <div class="flashcard-inner" id="flashcard-inner">
+          <!-- Front -->
+          <div class="flashcard-face flashcard-front">
+            <div class="fc-qid" id="fc-qid-front">T1A01</div>
+            <div class="fc-question" id="fc-question">Loading…</div>
+            <div class="fc-tap-hint">Tap to reveal answer →</div>
+          </div>
+          <!-- Back -->
+          <div class="flashcard-face flashcard-back">
+            <div class="fc-qid" id="fc-qid-back">T1A01</div>
+            <div class="fc-answer-label">✓ Correct Answer</div>
+            <div class="fc-answer" id="fc-answer">Answer text</div>
+            <div class="fc-all-answers" id="fc-all-answers"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fc-actions" id="fc-actions" style="display:none">
+        <button class="btn btn-red" onclick="markCard(false)">✗ Still Learning</button>
+        <button class="btn btn-green" onclick="markCard(true)">✓ Got It</button>
+      </div>
+
+      <div class="fc-actions" id="fc-flip-hint" style="">
+        <button class="btn btn-secondary btn-full" onclick="flipCard()">Flip Card</button>
+      </div>
+    </div>
+
+    <!-- Done state -->
+    <div id="fc-done" style="display:none">
+      <div class="card" style="text-align:center">
+        <div style="font-size:48px;margin-bottom:12px">🎉</div>
+        <div class="page-title">Deck Complete!</div>
+        <div class="page-sub mt-2" id="fc-done-stats"></div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="restartFlashcards()">Study Again</button>
+      <button class="btn btn-secondary btn-full" onclick="showFlashcardMenu()">Choose Different Section</button>
+    </div>
+  </div>
+
+  <!-- PRACTICE TEST PAGE -->
+  <div id="page-test" class="page">
+    <!-- Start screen -->
+    <div id="test-start">
+      <div class="page-title">Practice Exam</div>
+      <div class="page-sub">35 questions · you need 26 correct (74%) to pass</div>
+      <div class="card mt-4">
+        <div class="label">Real Exam Format</div>
+        <p style="margin-top:8px;font-size:14px;color:var(--text2);line-height:1.6">
+          Questions are randomly drawn from the official FCC Technician pool, 
+          weighted the same as the real exam. A 26-minute timer keeps you on pace.
+        </p>
+      </div>
+      <button class="btn btn-primary btn-full mt-4" onclick="startTest()">Start Exam</button>
+    </div>
+
+    <!-- Active test -->
+    <div id="test-active" style="display:none">
+      <div class="test-status">
+        <div class="test-qnum">Question <span id="test-qnum">1</span> of 35</div>
+        <div class="test-timer" id="test-timer">⏱ 26:00</div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill blue" id="test-bar" style="width:0%"></div>
+      </div>
+      <div class="test-question-card">
+        <div class="test-qid" id="test-qid">T1A01</div>
+        <div class="test-question" id="test-question">Question text</div>
+      </div>
+      <div class="answer-options" id="answer-options"></div>
+      <div class="test-nav">
+        <button class="btn btn-secondary" id="test-prev-btn" onclick="testPrev()" disabled>← Prev</button>
+        <button class="btn btn-primary" id="test-next-btn" onclick="testNext()">Next →</button>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="test-results" style="display:none">
+      <div class="card score-header">
+        <div class="score-emoji" id="score-emoji">🎉</div>
+        <div class="score-num" id="score-num">0/35</div>
+        <div class="score-label" id="score-label">PASS</div>
+        <div class="score-sub" id="score-sub"></div>
+      </div>
+      <div class="flex-row mt-4">
+        <button class="btn btn-primary" style="flex:1" onclick="startTest()">Retake</button>
+        <button class="btn btn-secondary" style="flex:1" onclick="showPage('test')">Back</button>
+      </div>
+      <div id="review-section">
+        <div class="flex-between mt-4">
+          <div class="label">Review Wrong Answers</div>
+          <div id="wrong-count" class="text-red bold small"></div>
+        </div>
+        <div class="review-list mt-2" id="review-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROGRESS PAGE -->
+  <div id="page-progress" class="page">
+    <div class="flex-between">
+      <div>
+        <div class="page-title">My Progress</div>
+        <div class="page-sub">Track your exam readiness</div>
+      </div>
+      <button class="btn btn-secondary" style="padding:8px 14px;font-size:13px;" onclick="confirmReset()">Reset</button>
+    </div>
+
+    <!-- Readiness -->
+    <div class="card">
+      <div class="flex-between">
+        <div class="label">Overall Readiness</div>
+        <div class="bold text-accent" id="prog-readiness">0%</div>
+      </div>
+      <div class="progress-bar mt-2">
+        <div class="progress-fill" id="prog-readiness-bar" style="width:0%"></div>
+      </div>
+      <div class="mt-2 small text-muted">Based on flashcard accuracy and test scores</div>
+    </div>
+
+    <!-- Test History -->
+    <div>
+      <div class="label">Test History</div>
+      <div class="history-list mt-2" id="history-list">
+        <div class="empty-state"><div class="empty-icon">📝</div><p>No tests taken yet</p></div>
+      </div>
+    </div>
+
+    <!-- Per-section progress -->
+    <div>
+      <div class="label">Progress by Section</div>
+      <div class="section-progress-list mt-2" id="section-progress-list"></div>
+    </div>
+
+    <!-- Badges -->
+    <div>
+      <div class="label">Achievements</div>
+      <div class="badges-grid mt-2" id="badges-grid"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bottom Nav -->
+<nav id="nav">
+  <button class="nav-btn active" id="nav-home" onclick="showPage('home')">
+    <span class="nav-icon">🏠</span>Home
+  </button>
+  <button class="nav-btn" id="nav-flashcard" onclick="showPage('flashcard')">
+    <span class="nav-icon">🃏</span>Flashcards
+  </button>
+  <button class="nav-btn" id="nav-test" onclick="showPage('test')">
+    <span class="nav-icon">📝</span>Exam
+  </button>
+  <button class="nav-btn" id="nav-sections" onclick="showPage('sections')">
+    <span class="nav-icon">📚</span>Sections
+  </button>
+  <button class="nav-btn" id="nav-progress" onclick="showPage('progress')">
+    <span class="nav-icon">📊</span>Progress
+  </button>
+</nav>
+
+<!-- Reset Confirm Modal -->
+<div class="modal-overlay" id="reset-modal" onclick="closeModal('reset-modal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-title">Reset All Progress?</div>
+    <div class="modal-sub">This will clear all your flashcard history, test scores, and streak data. This cannot be undone.</div>
+    <div class="modal-actions">
+      <button class="btn btn-red btn-full" onclick="doReset()">Yes, Reset Everything</button>
+      <button class="btn btn-secondary btn-full" onclick="closeModal('reset-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="questions.js"></script>
+<script>
+// ===== DATA & STATE =====
+
+const SUBELEMENT_NAMES = {
+  T1: 'T1 · FCC Rules & Regulations',
+  T2: 'T2 · Operating Procedures',
+  T3: 'T3 · Radio Wave Characteristics',
+  T4: 'T4 · Amateur Radio Practices',
+  T5: 'T5 · Electrical Principles',
+  T6: 'T6 · Electronic Components',
+  T7: 'T7 · Practical Circuits',
+  T8: 'T8 · Signals & Emissions',
+  T9: 'T9 · Antennas & Feed Lines',
+  T0: 'T0 · Electrical & RF Safety',
+};
+
+const BADGES = [
+  { id: 'first_flip', icon: '🃏', name: 'First Flip', desc: 'Flip your first flashcard' },
+  { id: 'first_test', icon: '📝', name: 'Test Taker', desc: 'Complete your first practice exam' },
+  { id: 'first_pass', icon: '🏆', name: 'First Pass', desc: 'Score 74% or higher on a practice exam' },
+  { id: 'perfect_test', icon: '💯', name: 'Perfect Score', desc: 'Score 100% on a practice exam' },
+  { id: '100_cards', icon: '💪', name: 'Century', desc: 'Study 100 flashcards' },
+  { id: 'all_seen', icon: '👁️', name: 'All Seen', desc: 'See all 411 questions' },
+  { id: 'streak_3', icon: '🔥', name: '3-Day Streak', desc: 'Study 3 days in a row' },
+  { id: 'streak_7', icon: '🌟', name: '7-Day Streak', desc: 'Study 7 days in a row' },
+  { id: 'mastered_50', icon: '🧠', name: 'Half Master', desc: 'Master 50 questions' },
+  { id: 'mastered_all', icon: '🎓', name: 'Full Master', desc: 'Master all 411 questions' },
+  { id: '5_tests', icon: '📚', name: 'Dedicated', desc: 'Take 5 practice exams' },
+  { id: 'ready', icon: '📡', name: 'Exam Ready', desc: 'Reach 90% readiness' },
+];
+
+// State loaded from localStorage
+let state = {
+  cards: {},        // { [qid]: { seen: bool, correct: int, wrong: int, mastered: bool } }
+  tests: [],        // [{ score, total, pct, date, wrong: [qids] }]
+  streak: 0,
+  lastStudyDay: null,
+  badges: [],       // earned badge ids
+  theme: 'auto',
+};
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('hamradio_state_v2');
+    if (saved) state = { ...state, ...JSON.parse(saved) };
+  } catch(e) {}
+  updateStreak();
+}
+
+function saveState() {
+  try { localStorage.setItem('hamradio_state_v2', JSON.stringify(state)); } catch(e) {}
+}
+
+function updateStreak() {
+  const today = new Date().toISOString().slice(0,10);
+  if (!state.lastStudyDay) return;
+  const last = new Date(state.lastStudyDay);
+  const now = new Date(today);
+  const diffDays = Math.round((now - last) / 86400000);
+  if (diffDays > 1) { state.streak = 0; saveState(); }
+}
+
+function recordStudyDay() {
+  const today = new Date().toISOString().slice(0,10);
+  if (state.lastStudyDay === today) return;
+  const last = state.lastStudyDay ? new Date(state.lastStudyDay) : null;
+  const now = new Date(today);
+  const diffDays = last ? Math.round((now - last) / 86400000) : 99;
+  if (diffDays === 1) {
+    state.streak = (state.streak || 0) + 1;
+  } else {
+    state.streak = 1;
+  }
+  state.lastStudyDay = today;
+  saveState();
+  checkBadges();
+}
+
+// ===== THEME =====
+
+function applyTheme(theme) {
+  if (theme === 'auto') {
+    const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  } else {
+    document.documentElement.setAttribute('data-theme', theme);
+  }
+  document.getElementById('theme-btn').textContent =
+    document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  state.theme = next;
+  applyTheme(next);
+  saveState();
+}
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+  if (state.theme === 'auto') applyTheme('auto');
+});
+
+// ===== NAVIGATION =====
+
+let currentPage = 'home';
+
+function showPage(page, skipMenu) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+  document.getElementById(`page-${page}`).classList.add('active');
+  const navBtn = document.getElementById(`nav-${page}`);
+  if (navBtn) navBtn.classList.add('active');
+
+  currentPage = page;
+  if (page === 'home') renderHome();
+  if (page === 'progress') renderProgress();
+  if (page === 'sections') renderSections();
+  if (page === 'flashcard' && !skipMenu) showFlashcardMenu();
+  if (page === 'test' && !skipMenu) showTestStart();
+
+  window.scrollTo(0, 0);
+}
+
+// ===== STATS / READINESS =====
+
+function getStats() {
+  const seen = Object.values(state.cards).filter(c => c.seen).length;
+  const mastered = Object.values(state.cards).filter(c => c.mastered).length;
+  const total = QUESTION_POOL.length;
+
+  // Flashcard accuracy (last seen)
+  const totalSeen = seen;
+  const totalCorrectCards = Object.values(state.cards).reduce((s,c) => s + (c.correct||0), 0);
+  const totalWrongCards = Object.values(state.cards).reduce((s,c) => s + (c.wrong||0), 0);
+  const cardAcc = (totalCorrectCards + totalWrongCards) > 0
+    ? totalCorrectCards / (totalCorrectCards + totalWrongCards) : 0;
+
+  // Test average (last 5)
+  const recentTests = state.tests.slice(-5);
+  const testAvg = recentTests.length > 0
+    ? recentTests.reduce((s,t) => s + t.pct, 0) / recentTests.length : 0;
+
+  // Readiness = blend of card mastery + test avg
+  let readiness = 0;
+  if (recentTests.length > 0) {
+    readiness = Math.round(testAvg * 0.6 + (mastered / total) * 100 * 0.4);
+  } else {
+    readiness = Math.round((mastered / total) * 100 * 0.7 + cardAcc * 30);
+  }
+  readiness = Math.min(100, readiness);
+
+  return { seen, mastered, total, cardAcc, testAvg, readiness, recentTests };
+}
+
+function getReadinessDesc(pct) {
+  if (pct >= 90) return '🎓 Exam ready! Go get licensed!';
+  if (pct >= 75) return '💪 Looking great — keep pushing!';
+  if (pct >= 50) return '📈 Good progress — keep studying!';
+  if (pct >= 25) return '🌱 Building foundation…';
+  return 'Start studying to track your progress';
+}
+
+// ===== HOME PAGE =====
+
+function renderHome() {
+  const stats = getStats();
+
+  document.getElementById('readiness-score').textContent = stats.readiness + '%';
+  document.getElementById('readiness-desc').textContent = getReadinessDesc(stats.readiness);
+  document.getElementById('readiness-bar').style.width = stats.readiness + '%';
+
+  document.getElementById('stat-seen').textContent = stats.seen;
+  document.getElementById('stat-mastered').textContent = stats.mastered;
+  document.getElementById('stat-tests').textContent = state.tests.length;
+  document.getElementById('stat-streak').textContent = state.streak || 0;
+}
+
+// ===== SECTIONS PAGE =====
+
+function renderSections() {
+  const list = document.getElementById('section-list');
+  const subelements = Object.keys(SUBELEMENT_NAMES).sort();
+
+  list.innerHTML = subelements.map(se => {
+    const qs = QUESTION_POOL.filter(q => q.id.startsWith(se));
+    const total = qs.length;
+    const seen = qs.filter(q => state.cards[q.id]?.seen).length;
+    const mastered = qs.filter(q => state.cards[q.id]?.mastered).length;
+    const pct = Math.round((mastered / total) * 100);
+    const barColor = pct >= 80 ? 'green' : pct >= 40 ? '' : '';
+
+    return `<div class="section-card" onclick="startSectionFlashcards('${se}')">
+      <div class="section-header">
+        <div class="section-title">${SUBELEMENT_NAMES[se]}</div>
+        <div class="section-count">${total} Qs</div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill ${barColor}" style="width:${pct}%"></div>
+      </div>
+      <div class="section-stats">
+        <div class="section-stat"><span class="dot dot-green"></span> ${mastered} mastered</div>
+        <div class="section-stat"><span class="dot dot-gray"></span> ${seen} seen</div>
+        <div class="section-stat"><span class="dot dot-gray"></span> ${total - seen} new</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ===== FLASHCARDS =====
+
+let fcDeck = [];
+let fcIndex = 0;
+let fcSection = 'all';
+let fcFlipped = false;
+let fcSessionCorrect = 0;
+let fcSessionWrong = 0;
+
+function showFlashcardMenu() {
+  document.getElementById('fc-mode-select').style.display = 'block';
+  document.getElementById('fc-session').style.display = 'none';
+  document.getElementById('fc-done').style.display = 'none';
+
+  const chooser = document.getElementById('section-chooser');
+  const subelements = Object.keys(SUBELEMENT_NAMES).sort();
+
+  chooser.innerHTML = `
+    <div class="mode-option selected" data-se="all" onclick="selectSection(this, 'all')">
+      <div class="mode-option-title">📚 All Questions (411)</div>
+      <div class="mode-option-desc">Full pool — prioritizes questions you haven't seen or got wrong</div>
+    </div>
+    <div class="mode-option" data-se="weak" onclick="selectSection(this, 'weak')">
+      <div class="mode-option-title">⚡ Weak Spots Only</div>
+      <div class="mode-option-desc">Questions you've gotten wrong or haven't studied yet</div>
+    </div>
+    ${subelements.map(se => {
+      const count = QUESTION_POOL.filter(q => q.id.startsWith(se)).length;
+      return `<div class="mode-option" data-se="${se}" onclick="selectSection(this, '${se}')">
+        <div class="mode-option-title">${SUBELEMENT_NAMES[se]} (${count})</div>
+        <div class="mode-option-desc">${getSectionDesc(se)}</div>
+      </div>`;
+    }).join('')}
+  `;
+  fcSection = 'all';
+}
+
+function getSectionDesc(se) {
+  const qs = QUESTION_POOL.filter(q => q.id.startsWith(se));
+  const mastered = qs.filter(q => state.cards[q.id]?.mastered).length;
+  return `${mastered}/${qs.length} mastered`;
+}
+
+function selectSection(el, se) {
+  document.querySelectorAll('.mode-option').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  fcSection = se;
+}
+
+function buildDeck(section) {
+  let pool;
+  if (section === 'all') {
+    pool = [...QUESTION_POOL];
+  } else if (section === 'weak') {
+    // Not seen + wrong answers, then unseen, then all
+    pool = QUESTION_POOL.filter(q => {
+      const c = state.cards[q.id];
+      if (!c || !c.seen) return true; // unseen
+      if (c.wrong > 0 && !c.mastered) return true; // got wrong
+      return false;
+    });
+    if (pool.length === 0) pool = [...QUESTION_POOL];
+  } else {
+    pool = QUESTION_POOL.filter(q => q.id.startsWith(section));
+  }
+
+  // Sort: not seen first, then by error rate descending
+  pool.sort((a, b) => {
+    const ca = state.cards[a.id];
+    const cb = state.cards[b.id];
+    const seenA = ca?.seen ? 1 : 0;
+    const seenB = cb?.seen ? 1 : 0;
+    if (seenA !== seenB) return seenA - seenB;
+    const errA = ca ? (ca.wrong || 0) / Math.max(1, (ca.correct||0) + (ca.wrong||0)) : 0;
+    const errB = cb ? (cb.wrong || 0) / Math.max(1, (cb.correct||0) + (cb.wrong||0)) : 0;
+    return errB - errA;
+  });
+
+  return pool;
+}
+
+function startFlashcards() {
+  fcDeck = buildDeck(fcSection);
+  fcIndex = 0;
+  fcSessionCorrect = 0;
+  fcSessionWrong = 0;
+  fcFlipped = false;
+
+  document.getElementById('fc-mode-select').style.display = 'none';
+  document.getElementById('fc-session').style.display = 'block';
+  document.getElementById('fc-done').style.display = 'none';
+
+  document.getElementById('fc-total').textContent = fcDeck.length;
+  document.getElementById('fc-section-label').textContent =
+    fcSection === 'all' ? 'All Questions' :
+    fcSection === 'weak' ? 'Weak Spots' :
+    SUBELEMENT_NAMES[fcSection];
+
+  loadCard(0);
+  recordStudyDay();
+  checkBadge('first_flip');
+}
+
+function startQuickFlashcards() {
+  showPage('flashcard', true);
+  fcSection = 'weak';
+  startFlashcards();
+}
+
+function startSectionFlashcards(se) {
+  showPage('flashcard', true);
+  fcSection = se;
+  startFlashcards();
+}
+
+function loadCard(idx) {
+  if (idx >= fcDeck.length) {
+    showFcDone();
+    return;
+  }
+  const q = fcDeck[idx];
+  fcFlipped = false;
+
+  document.getElementById('flashcard-inner').classList.remove('flipped');
+  document.getElementById('fc-qid-front').textContent = q.id;
+  document.getElementById('fc-qid-back').textContent = q.id;
+  document.getElementById('fc-question').textContent = q.question;
+  document.getElementById('fc-answer').textContent = q.answers[q.correct];
+
+  // All answers on back
+  const letters = ['A', 'B', 'C', 'D'];
+  document.getElementById('fc-all-answers').innerHTML =
+    `<div class="fc-all-label">All Options</div>` +
+    q.answers.map((a, i) =>
+      `<div class="fc-option ${i === q.correct ? 'correct' : 'wrong'}">
+        <span class="fc-option-letter">${letters[i]}</span>
+        <span>${a}</span>
+      </div>`
+    ).join('');
+
+  document.getElementById('fc-current').textContent = idx + 1;
+  document.getElementById('fc-bar').style.width = (idx / fcDeck.length * 100) + '%';
+
+  document.getElementById('fc-actions').style.display = 'none';
+  document.getElementById('fc-flip-hint').style.display = '';
+
+  // Track seen
+  if (!state.cards[q.id]) state.cards[q.id] = {};
+  state.cards[q.id].seen = true;
+  saveState();
+
+  // Check badges
+  const seenCount = Object.values(state.cards).filter(c => c.seen).length;
+  if (seenCount >= 100) checkBadge('100_cards');
+  if (seenCount >= QUESTION_POOL.length) checkBadge('all_seen');
+}
+
+function flipCard() {
+  if (fcFlipped) return;
+  fcFlipped = true;
+  document.getElementById('flashcard-inner').classList.add('flipped');
+  document.getElementById('fc-actions').style.display = 'flex';
+  document.getElementById('fc-flip-hint').style.display = 'none';
+}
+
+function markCard(correct) {
+  const q = fcDeck[fcIndex];
+  if (!state.cards[q.id]) state.cards[q.id] = {};
+  const c = state.cards[q.id];
+
+  if (correct) {
+    c.correct = (c.correct || 0) + 1;
+    fcSessionCorrect++;
+    // Mastered = got right 3+ times and error rate < 20%
+    const total = (c.correct || 0) + (c.wrong || 0);
+    if (c.correct >= 3 && (c.wrong || 0) / total < 0.2) c.mastered = true;
+  } else {
+    c.wrong = (c.wrong || 0) + 1;
+    c.mastered = false;
+    fcSessionWrong++;
+  }
+  saveState();
+  checkBadges();
+
+  fcIndex++;
+  loadCard(fcIndex);
+}
+
+function showFcDone() {
+  document.getElementById('fc-session').style.display = 'none';
+  document.getElementById('fc-done').style.display = 'flex';
+  document.getElementById('fc-done').style.flexDirection = 'column';
+  document.getElementById('fc-done').style.gap = '12px';
+
+  const total = fcSessionCorrect + fcSessionWrong;
+  const pct = total > 0 ? Math.round(fcSessionCorrect / total * 100) : 0;
+  document.getElementById('fc-done-stats').innerHTML =
+    `<strong>${fcSessionCorrect}</strong> correct, <strong>${fcSessionWrong}</strong> learning, ${pct}% accuracy`;
+
+  const mastered = Object.values(state.cards).filter(c => c.mastered).length;
+  if (mastered >= 50) checkBadge('mastered_50');
+  if (mastered >= QUESTION_POOL.length) checkBadge('mastered_all');
+}
+
+function restartFlashcards() {
+  startFlashcards();
+}
+
+function endFlashcards() {
+  showFlashcardMenu();
+}
+
+// ===== TTS =====
+
+let speaking = false;
+let utterance = null;
+
+function speakQuestion() {
+  if (!window.speechSynthesis) return;
+  if (speaking) {
+    window.speechSynthesis.cancel();
+    speaking = false;
+    document.getElementById('fc-tts-btn').classList.remove('speaking');
+    return;
+  }
+
+  const q = fcDeck[fcIndex];
+  if (!q) return;
+
+  let text = q.question;
+  if (fcFlipped) {
+    text += '. The correct answer is: ' + q.answers[q.correct];
+  }
+
+  utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = 0.9;
+  utterance.onend = () => {
+    speaking = false;
+    document.getElementById('fc-tts-btn')?.classList.remove('speaking');
+  };
+  utterance.onerror = () => {
+    speaking = false;
+    document.getElementById('fc-tts-btn')?.classList.remove('speaking');
+  };
+
+  window.speechSynthesis.speak(utterance);
+  speaking = true;
+  document.getElementById('fc-tts-btn').classList.add('speaking');
+}
+
+// ===== PRACTICE TEST =====
+
+let testQuestions = [];
+let testAnswers = [];  // user's selected answer indices
+let testRevealed = []; // which have been revealed
+let testCurrentQ = 0;
+let testTimer = null;
+let testTimeLeft = 26 * 60;
+let testStartTime = null;
+
+function showTestStart() {
+  document.getElementById('test-start').style.display = 'block';
+  document.getElementById('test-active').style.display = 'none';
+  document.getElementById('test-results').style.display = 'none';
+  if (testTimer) { clearInterval(testTimer); testTimer = null; }
+}
+
+function buildTestDeck() {
+  // Real exam draws from each subelement proportionally
+  // Standard weighting per NCVEC: T1(6), T2(3), T3(3), T4(2), T5(4), T6(4), T7(4), T8(4), T9(2), T0(3) = 35
+  const weights = { T1:6, T2:3, T3:3, T4:2, T5:4, T6:4, T7:4, T8:4, T9:2, T0:3 };
+  const deck = [];
+
+  for (const [se, count] of Object.entries(weights)) {
+    const pool = QUESTION_POOL.filter(q => q.id.startsWith(se));
+    const shuffled = shuffle([...pool]);
+    deck.push(...shuffled.slice(0, count));
+  }
+
+  return shuffle(deck);
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function startTest() {
+  testQuestions = buildTestDeck();
+  testAnswers = new Array(35).fill(-1);
+  testRevealed = new Array(35).fill(false);
+  testCurrentQ = 0;
+  testTimeLeft = 26 * 60;
+  testStartTime = Date.now();
+
+  document.getElementById('test-start').style.display = 'none';
+  document.getElementById('test-active').style.display = 'block';
+  document.getElementById('test-results').style.display = 'none';
+
+  renderTestQuestion();
+  startTestTimer();
+
+  recordStudyDay();
+  checkBadge('first_test');
+}
+
+function startTestTimer() {
+  if (testTimer) clearInterval(testTimer);
+  testTimer = setInterval(() => {
+    testTimeLeft--;
+    updateTimerDisplay();
+    if (testTimeLeft <= 0) {
+      clearInterval(testTimer);
+      submitTest();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const mins = Math.floor(testTimeLeft / 60);
+  const secs = testTimeLeft % 60;
+  const el = document.getElementById('test-timer');
+  el.textContent = `⏱ ${mins}:${secs.toString().padStart(2,'0')}`;
+  el.classList.toggle('warning', testTimeLeft < 5 * 60);
+}
+
+function renderTestQuestion() {
+  const q = testQuestions[testCurrentQ];
+  const n = testCurrentQ + 1;
+
+  document.getElementById('test-qnum').textContent = n;
+  document.getElementById('test-qid').textContent = q.id;
+  document.getElementById('test-question').textContent = q.question;
+  document.getElementById('test-bar').style.width = (n / 35 * 100) + '%';
+
+  document.getElementById('test-prev-btn').disabled = testCurrentQ === 0;
+  document.getElementById('test-next-btn').textContent =
+    testCurrentQ === 34 ? 'Submit →' : 'Next →';
+
+  const letters = ['A', 'B', 'C', 'D'];
+  const revealed = testRevealed[testCurrentQ];
+  const selected = testAnswers[testCurrentQ];
+
+  document.getElementById('answer-options').innerHTML = q.answers.map((a, i) => {
+    let cls = '';
+    if (revealed) {
+      if (i === q.correct) cls = 'correct';
+      else if (i === selected) cls = 'wrong';
+    } else if (i === selected) {
+      cls = 'selected';
+    }
+    return `<button class="answer-option ${cls}" onclick="selectAnswer(${i})" ${revealed?'disabled':''}>
+      <span class="answer-letter">${letters[i]}</span>
+      <span>${a}</span>
+    </button>`;
+  }).join('');
+}
+
+function selectAnswer(idx) {
+  if (testRevealed[testCurrentQ]) return;
+  testAnswers[testCurrentQ] = idx;
+  renderTestQuestion();
+}
+
+function testPrev() {
+  if (testCurrentQ > 0) {
+    testCurrentQ--;
+    renderTestQuestion();
+  }
+}
+
+function testNext() {
+  if (testCurrentQ < 34) {
+    testCurrentQ++;
+    renderTestQuestion();
+  } else {
+    submitTest();
+  }
+}
+
+function submitTest() {
+  if (testTimer) clearInterval(testTimer);
+
+  let correct = 0;
+  const wrongQids = [];
+
+  testQuestions.forEach((q, i) => {
+    if (testAnswers[i] === q.correct) {
+      correct++;
+      const c = state.cards[q.id] || {};
+      c.seen = true; c.correct = (c.correct||0) + 1;
+      state.cards[q.id] = c;
+    } else {
+      wrongQids.push(q.id);
+      const c = state.cards[q.id] || {};
+      c.seen = true; c.wrong = (c.wrong||0) + 1; c.mastered = false;
+      state.cards[q.id] = c;
+    }
+  });
+
+  const pct = Math.round(correct / 35 * 100);
+  const pass = correct >= 26;
+
+  state.tests.push({ score: correct, total: 35, pct, date: new Date().toISOString(), wrong: wrongQids });
+  saveState();
+  checkBadges();
+
+  showTestResults(correct, pct, pass, wrongQids);
+}
+
+function showTestResults(correct, pct, pass, wrongQids) {
+  document.getElementById('test-active').style.display = 'none';
+  document.getElementById('test-results').style.display = 'block';
+
+  document.getElementById('score-emoji').textContent = pass ? (pct === 100 ? '💯' : '🏆') : '📖';
+  document.getElementById('score-num').textContent = `${correct}/35`;
+  document.getElementById('score-num').className = 'score-num ' + (pass ? 'pass' : 'fail');
+  document.getElementById('score-label').textContent = pass ? '✓ PASS' : '✗ FAIL';
+  document.getElementById('score-sub').textContent = `${pct}% · Need 74% (26/35) to pass`;
+
+  const elapsed = Math.round((Date.now() - testStartTime) / 1000);
+  const mins = Math.floor(elapsed / 60);
+  const secs = elapsed % 60;
+
+  if (wrongQids.length === 0) {
+    document.getElementById('review-section').style.display = 'none';
+  } else {
+    document.getElementById('review-section').style.display = 'block';
+    document.getElementById('wrong-count').textContent = `${wrongQids.length} wrong`;
+    document.getElementById('review-list').innerHTML = testQuestions.map((q, i) => {
+      const isWrong = testAnswers[i] !== q.correct;
+      if (!isWrong) return '';
+      const selected = testAnswers[i];
+      return `<div class="review-item wrong-item">
+        <div class="review-qid wrong-item">${q.id}</div>
+        <div class="review-q">${q.question}</div>
+        <div class="review-answer">
+          ${selected >= 0 ? `<span class="wrong-ans">✗ ${q.answers[selected]}</span><br>` : ''}
+          <span class="right">✓ ${q.answers[q.correct]}</span>
+        </div>
+      </div>`;
+    }).filter(Boolean).join('');
+  }
+}
+
+// ===== PROGRESS PAGE =====
+
+function renderProgress() {
+  const stats = getStats();
+
+  document.getElementById('prog-readiness').textContent = stats.readiness + '%';
+  document.getElementById('prog-readiness-bar').style.width = stats.readiness + '%';
+
+  // Test history
+  const histList = document.getElementById('history-list');
+  if (state.tests.length === 0) {
+    histList.innerHTML = '<div class="empty-state"><div class="empty-icon">📝</div><p>No tests taken yet</p></div>';
+  } else {
+    histList.innerHTML = [...state.tests].reverse().slice(0, 10).map(t => {
+      const pass = t.score >= 26;
+      const d = new Date(t.date);
+      const dateStr = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+      return `<div class="history-item">
+        <div class="history-score ${pass?'pass':'fail'}">${t.score}/35</div>
+        <div class="history-info">
+          <div>${t.pct}% · ${pass ? '✓ Pass' : '✗ Fail'}</div>
+          <div class="history-date">${dateStr}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // Per-section progress
+  const spList = document.getElementById('section-progress-list');
+  const subelements = Object.keys(SUBELEMENT_NAMES).sort();
+  spList.innerHTML = subelements.map(se => {
+    const qs = QUESTION_POOL.filter(q => q.id.startsWith(se));
+    const total = qs.length;
+    const mastered = qs.filter(q => state.cards[q.id]?.mastered).length;
+    const seen = qs.filter(q => state.cards[q.id]?.seen).length;
+    const pct = Math.round(mastered / total * 100);
+    return `<div class="sp-card">
+      <div class="sp-header">
+        <div class="sp-title">${SUBELEMENT_NAMES[se]}</div>
+        <div class="sp-pct">${pct}%</div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill ${pct >= 80 ? 'green' : ''}" style="width:${pct}%"></div>
+      </div>
+      <div class="sp-detail">
+        <span>✓ ${mastered} mastered</span>
+        <span>👁 ${seen} seen</span>
+        <span>📚 ${total} total</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Badges
+  renderBadges();
+}
+
+function renderBadges() {
+  document.getElementById('badges-grid').innerHTML = BADGES.map(b => {
+    const earned = state.badges.includes(b.id);
+    return `<div class="badge-card ${earned ? 'earned' : ''}" title="${b.desc}">
+      <div class="badge-icon">${b.icon}</div>
+      <div class="badge-name">${b.name}</div>
+    </div>`;
+  }).join('');
+}
+
+// ===== BADGES =====
+
+function checkBadge(id) {
+  if (!state.badges.includes(id)) {
+    state.badges.push(id);
+    saveState();
+  }
+}
+
+function checkBadges() {
+  const stats = getStats();
+  const tests = state.tests;
+
+  if (Object.values(state.cards).some(c => c.seen)) checkBadge('first_flip');
+  if (tests.length >= 1) checkBadge('first_test');
+  if (tests.some(t => t.score >= 26)) checkBadge('first_pass');
+  if (tests.some(t => t.score === 35)) checkBadge('perfect_test');
+  if (tests.length >= 5) checkBadge('5_tests');
+
+  const seenCount = Object.values(state.cards).filter(c => c.seen).length;
+  if (seenCount >= 100) checkBadge('100_cards');
+  if (seenCount >= QUESTION_POOL.length) checkBadge('all_seen');
+
+  const mastered = Object.values(state.cards).filter(c => c.mastered).length;
+  if (mastered >= 50) checkBadge('mastered_50');
+  if (mastered >= QUESTION_POOL.length) checkBadge('mastered_all');
+
+  if (state.streak >= 3) checkBadge('streak_3');
+  if (state.streak >= 7) checkBadge('streak_7');
+  if (stats.readiness >= 90) checkBadge('ready');
+}
+
+// ===== RESET =====
+
+function confirmReset() {
+  document.getElementById('reset-modal').classList.add('open');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function doReset() {
+  state = { cards: {}, tests: [], streak: 0, lastStudyDay: null, badges: [], theme: state.theme };
+  saveState();
+  closeModal('reset-modal');
+  renderProgress();
+  renderHome();
+  showPage('home');
+}
+
+// ===== PWA SERVICE WORKER =====
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
+
+// ===== INIT =====
+
+loadState();
+applyTheme(state.theme || 'auto');
+renderHome();
+renderSections();
+</script>
+</body>
+</html>
